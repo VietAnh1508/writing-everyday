@@ -1,10 +1,15 @@
-import React, { ChangeEvent, FC, ReactElement, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FunctionComponent,
+  ReactElement,
+  useState,
+} from 'react';
 
 import { Form } from 'react-bootstrap';
 
 import './Editor.css';
 
-const Editor: FC<{}> = (): ReactElement => {
+const Editor: FunctionComponent<{}> = (): ReactElement => {
   const [content, setContent] = useState('');
   const [wordCount, setWordCount] = useState(0);
 
@@ -16,6 +21,7 @@ const Editor: FC<{}> = (): ReactElement => {
   };
 
   const countWords = (paragraph: string): number => {
+    console.log('lines: ' + paragraph.split(/\n/g).length);
     if (paragraph === '') {
       return 0;
     }
@@ -33,7 +39,7 @@ const Editor: FC<{}> = (): ReactElement => {
         as='textarea'
         value={content}
         cols={40}
-        rows={20}
+        rows={15}
         onChange={onUserInput}
       />
       {wordCount} word{wordCount > 1 && 's'}
