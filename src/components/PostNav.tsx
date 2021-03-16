@@ -1,16 +1,25 @@
-import React, { FunctionComponent, ReactElement, useState } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 import { Row, Col, Pagination } from 'react-bootstrap';
 
-const PostNav: FunctionComponent<{}> = (): ReactElement => {
+interface Props {
+  selectedDay: number;
+  selectedMonth: number;
+  selectedYear: number;
+  onChangeSelectedDay: (e: React.MouseEvent<HTMLElement>) => void;
+  goToPrevMonth: () => void;
+  goToNextMonth: () => void;
+}
+
+const PostNav: FunctionComponent<Props> = ({
+  selectedDay,
+  selectedMonth,
+  selectedYear,
+  onChangeSelectedDay,
+  goToPrevMonth,
+  goToNextMonth,
+}): ReactElement => {
   const today = new Date();
-
-  const getCurrentMonth = (): number => today.getMonth() + 1;
-
-  const getCurrentYear = (): number => today.getFullYear();
-
-  const [selectedMonth, setSelectedMonth] = useState(() => getCurrentMonth());
-  const [selectedYear, setSelectedYear] = useState(() => getCurrentYear());
 
   const getMonthName = (month: number): string => {
     return new Date(selectedYear, month, 0).toLocaleString('default', {
@@ -30,31 +39,13 @@ const PostNav: FunctionComponent<{}> = (): ReactElement => {
 
   const days: number[] = getDaysInMonth(selectedMonth, selectedYear);
 
-  const goToPrevMonth = () => {
-    if (selectedMonth === 1) {
-      setSelectedMonth(12);
-      setSelectedYear(selectedYear - 1);
-    } else {
-      setSelectedMonth(selectedMonth - 1);
-    }
-  };
-
-  const goToNextMonth = () => {
-    if (selectedMonth === 12) {
-      setSelectedMonth(1);
-      setSelectedYear(selectedYear + 1);
-    } else {
-      setSelectedMonth(selectedMonth + 1);
-    }
-  };
-
   return (
     <Row>
       <Col>
         <Row>
           <Col>
             <h6>
-              {getMonthName(selectedMonth)} {selectedYear}
+              {getMonthName(selectedMonth + 1)} {selectedYear}
             </h6>
           </Col>
         </Row>
@@ -63,7 +54,13 @@ const PostNav: FunctionComponent<{}> = (): ReactElement => {
             <Pagination size='sm'>
               <Pagination.Prev onClick={goToPrevMonth} />
               {days.map((day: number) => (
-                <Pagination.Item key={`${selectedMonth}-${day}`}>
+                <Pagination.Item
+                  key={`${selectedMonth}-${day}`}
+                  active={
+                    selectedDay === day && today.getMonth() === selectedMonth
+                  }
+                  onClick={onChangeSelectedDay}
+                >
                   {day}
                 </Pagination.Item>
               ))}
