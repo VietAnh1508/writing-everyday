@@ -9,13 +9,20 @@ import { Form } from 'react-bootstrap';
 
 import './Editor.css';
 
-const Editor: FunctionComponent<{}> = (): ReactElement => {
-  const [content, setContent] = useState('');
+import Post from '../model/Post';
+
+interface Props {
+  // post: Post;
+  content: string;
+}
+
+const Editor: FunctionComponent<Props> = ({ content }): ReactElement => {
+  // const [content, setContent] = useState('');
   const [wordCount, setWordCount] = useState(0);
 
   const onUserInput = (event: ChangeEvent<HTMLInputElement>) => {
     const paragraph: string = event.target.value;
-    setContent(paragraph);
+    // setContent(paragraph);
     setWordCount(countWords(paragraph));
     autoGrow(event.target);
   };

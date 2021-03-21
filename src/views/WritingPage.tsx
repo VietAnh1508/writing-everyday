@@ -1,4 +1,9 @@
-import React, { FunctionComponent, ReactElement, useState } from 'react';
+import React, {
+  FunctionComponent,
+  ReactElement,
+  useState,
+  useEffect,
+} from 'react';
 
 import { Row, Col } from 'react-bootstrap';
 
@@ -12,10 +17,15 @@ import Post from '../model/Post';
 const WritingPage: FunctionComponent<{}> = (): ReactElement => {
   const today = new Date();
 
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [selectedDay, setSelectedDay] = useState(today.getDate());
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth());
   const [selectedYear, setSelectedYear] = useState(today.getFullYear());
+
+  useEffect(() => {
+    const data: Post[] = getData();
+    setPosts(data);
+  });
 
   const handleChangeSelectedDay = (e: React.MouseEvent<HTMLElement>) => {
     const day: string = (e.target as HTMLElement).innerText;
@@ -42,6 +52,17 @@ const WritingPage: FunctionComponent<{}> = (): ReactElement => {
     }
   };
 
+  const getPostcontentBySelectedDay = (): string => {
+    const day = new Date(selectedYear, selectedMonth, selectedDay);
+    const post: Post | undefined = posts.find(
+      (post: Post) => post.createdDate.getTime() === day.getTime()
+    );
+    if (post) {
+      return post.content;
+    }
+    return '';
+  };
+
   return (
     <Col>
       <Row>
@@ -58,7 +79,7 @@ const WritingPage: FunctionComponent<{}> = (): ReactElement => {
       </Row>
       <Row>
         <Col>
-          <Editor />
+          <Editor content={getPostcontentBySelectedDay()} />
         </Col>
       </Row>
     </Col>

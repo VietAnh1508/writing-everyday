@@ -2,10 +2,10 @@ export const getData = () => {
     return [{
         id: 1,
         content: 'abc',
-        createDate: new Date()
+        createdDate: new Date(2021, 2, 21)
     }, {
         id: 2,
         content: 'def',
-        createDate: new Date()
+        createdDate: new Date(2021, 2, 19)
     }]
 }
