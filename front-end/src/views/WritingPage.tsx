@@ -25,7 +25,7 @@ const WritingPage: FunctionComponent<{}> = (): ReactElement => {
   useEffect(() => {
     const data: Post[] = getData();
     setPosts(data);
-  });
+  }, [selectedDay]);
 
   const handleChangeSelectedDay = (e: React.MouseEvent<HTMLElement>) => {
     const day: string = (e.target as HTMLElement).innerText;
